@@ -66,6 +66,10 @@ namespace MyApp
                                 {
                                     Console.WriteLine("Enter new Item: ");
                                     selectedProd.item = Console.ReadLine() ?? "ERROR";
+                                    Console.WriteLine("Enter new Quantity: ");
+                                    selectedProd.quantity = int.Parse(Console.ReadLine() ?? "0");
+                                    Console.WriteLine("Enter new Price: ");
+                                    selectedProd.price = double.Parse(Console.ReadLine() ?? "0");
                                     InventoryServiceProxy.Current.AddOrUpdate(selectedProd);
                                 }
                                 break;
@@ -82,7 +86,7 @@ namespace MyApp
                         }
                         break;
                     case 'C':
-                        Console.WriteLine("\n1. Add Item\n2. Read Cart\n3. Remove Item\n4. Checkout\n5. Exit\n");
+                        Console.WriteLine("\n1. Add Item\n2. Read Cart\n3. Update Item\n4. Remove Item\n5. Checkout\n6. Exit\n");
                         Console.WriteLine("Enter choice: ");
                         input = int.Parse(Console.ReadLine() ?? "0");
                         //shopping Cart
@@ -120,6 +124,21 @@ namespace MyApp
                                 }
                                 break;
                             case 3:
+                                Console.WriteLine("Enter Id to Update (int): ");
+                                tempInt = int.Parse(Console.ReadLine() ?? "-1");
+                                var selectedProd = cart.FirstOrDefault(p => p.id == tempInt);
+                                if (selectedProd != null)
+                                {
+                                    Console.WriteLine("Enter new Quantity: ");
+                                    selectedProd.quantity = int.Parse(Console.ReadLine() ?? "0");
+                                    foreach (var prod in inventory) {
+                                        if (prod.item == selectedProd.item) { 
+                                            prod.quantity += selectedProd.quantity;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 4:
                                 Console.WriteLine("Enter Id to Delete (int): ");
                                 tempInt = int.Parse(Console.ReadLine() ?? "-1");
                                 //add item and quantity back to inventory
@@ -135,7 +154,7 @@ namespace MyApp
                                 }
                                 CartServiceProxy.Current.Delete(tempInt);
                                 break;
-                            case 4:
+                            case 5:
                                 double total = 0;
                                 Console.WriteLine("Id. Item\tQuantity\tPrice");
                                 foreach (var prod in cart)
@@ -147,7 +166,7 @@ namespace MyApp
                                 Console.WriteLine("\nThank you for shopping with us!");
                                 Environment.Exit(0);
                                 break;
-                            case 5:
+                            case 6:
                                 break;
                             default:
                                 Console.WriteLine("Error: Unknown Command");
