@@ -129,11 +129,13 @@ namespace MyApp
                                 var selectedProd = cart.FirstOrDefault(p => p.id == tempInt);
                                 if (selectedProd != null)
                                 {
+                                    tempInt = selectedProd.quantity;
                                     Console.WriteLine("Enter new Quantity: ");
-                                    selectedProd.quantity = int.Parse(Console.ReadLine() ?? "0");
+                                    int temp = int.Parse(Console.ReadLine() ?? "0");
                                     foreach (var prod in inventory) {
-                                        if (prod.item == selectedProd.item) { 
-                                            prod.quantity += selectedProd.quantity;
+                                        if (prod.item == selectedProd.item && prod.quantity>= temp) { 
+                                            prod.quantity += (tempInt-temp);
+                                            selectedProd.quantity = temp;
                                         }
                                     }
                                 }
