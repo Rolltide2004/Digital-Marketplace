@@ -4,66 +4,161 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Xml.Serialization;
 using COP4870.Models;
 using COP4870.Services;
-namespace MyApp {
-    internal class Program {
-        static void Main(string[] args) {
+namespace MyApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
 
             Console.WriteLine("Welcome to the List");
             int input;
             int tempInt = 0;
+            char choice;
 
-            List<Product?> cart = ProductServiceProxy.Current.Products;
-            List<Product?> inventory = ProductServiceProxy.Current.Products;
+            List<Product?> cart = CartServiceProxy.Current.Products;
+            List<Product?> inventory = InventoryServiceProxy.Current.Products;
 
-            do{
-                Console.WriteLine("\n1. Create Item\n2. Read List\n3. Update Item\n4. Delete Item\n5. Exit\n");
+            do
+            {
+                Console.WriteLine("I. Inventory\nC. Shopping Cart\nE. Exit");
+                choice = Console.ReadLine()?.ToUpper()[0] ?? 'X';
 
-                Console.WriteLine("Enter choice: ");
-                input = int.Parse(Console.ReadLine() ?? "0");
-
-                switch (input) {
-                    case 1:
-                        Console.WriteLine("Enter Item to add:");
-                        ProductServiceProxy.Current.AddOrUpdate(new Product{
-                            item = Console.ReadLine()
-                        });
-                        break;
-                    case 2:
-                        foreach (var prod in cart){
-                            Console.WriteLine(prod);
+                switch (choice)
+                {
+                    case 'I':
+                        Console.WriteLine("\n1. Create Item\n2. Read Inventory\n3. Update Item\n4. Delete Item\n5. Exit\n");
+                        Console.WriteLine("Enter choice: ");
+                        input = int.Parse(Console.ReadLine() ?? "0");
+                        //Inventory
+                        switch (input)
+                        {
+                            case 1:
+                                Console.WriteLine("Enter Item to add:");
+                                string? item = Console.ReadLine();
+                                Console.WriteLine("Enter Quantity:");
+                                int quantity = int.Parse(Console.ReadLine() ?? "0");
+                                Console.WriteLine("Enter Price:");
+                                double price = double.Parse(Console.ReadLine() ?? "0");
+                                InventoryServiceProxy.Current.AddOrUpdate(new Product
+                                {
+                                    item = item,
+                                    quantity = quantity,
+                                    price = price
+                                });
+                                break;
+                            case 2:
+                                Console.WriteLine("Id. Item\tQuantity\tPrice");
+                                foreach (var prod in inventory)
+                                {
+                                    Console.WriteLine(prod);
+                                }
+                                Console.WriteLine();
+                                break;
+                            case 3:
+                                Console.WriteLine("Enter Id to update: ");
+                                tempInt = int.Parse(Console.ReadLine() ?? "-1");
+                                var selectedProd = inventory.FirstOrDefault(p => p.id == tempInt);
+                                if (selectedProd != null)
+                                {
+                                    Console.WriteLine("Enter new Item: ");
+                                    selectedProd.item = Console.ReadLine() ?? "ERROR";
+                                    InventoryServiceProxy.Current.AddOrUpdate(selectedProd);
+                                }
+                                break;
+                            case 4:
+                                Console.WriteLine("Enter Id to Delete: ");
+                                tempInt = int.Parse(Console.ReadLine() ?? "-1");
+                                InventoryServiceProxy.Current.Delete(tempInt);
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                Console.WriteLine("Error: Unknown Command");
+                                break;
                         }
                         break;
-                    case 3:
-                        Console.WriteLine("Enter Id to update: ");
-                        tempInt = int.Parse(Console.ReadLine() ?? "-1");
-
-                        var selectedProd = cart.FirstOrDefault(p => p.id == tempInt);
-                        if (selectedProd != null){
-                            selectedProd.item = Console.ReadLine() ?? "ERROR";
-                            ProductServiceProxy.Current.AddOrUpdate(selectedProd);
+                    case 'C':
+                        Console.WriteLine("\n1. Add Item\n2. Read Cart\n3. Remove Item\n4. Checkout\n5. Exit\n");
+                        Console.WriteLine("Enter choice: ");
+                        input = int.Parse(Console.ReadLine() ?? "0");
+                        //shopping Cart
+                        switch (input)
+                        {
+                            case 1:
+                                Console.WriteLine("Enter Item to add:");
+                                string? item = Console.ReadLine();
+                                Console.WriteLine("Enter Quantity:");
+                                int quantity = int.Parse(Console.ReadLine() ?? "0");
+                                foreach (var prod in inventory)
+                                {
+                                    if (prod?.item == item)
+                                    {
+                                        /*add if inventory has stock*/
+                                        if (prod?.quantity >= quantity)
+                                        {
+                                            CartServiceProxy.Current.AddOrUpdate(new Product
+                                            {
+                                                item = item,
+                                                quantity = quantity,
+                                                price = prod.price
+                                            });
+                                            prod.quantity -= quantity;
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            case 2:
+                                Console.WriteLine("Id. Item\tQuantity\tPrice");
+                                foreach (var prod in cart)
+                                {
+                                    Console.WriteLine(prod);
+                                }
+                                break;
+                            case 3:
+                                Console.WriteLine("Enter Id to Delete (int): ");
+                                tempInt = int.Parse(Console.ReadLine() ?? "-1");
+                                //add item and quantity back to inventory
+                                foreach (var prod in inventory)
+                                {
+                                    foreach (var cartProd in cart)
+                                    {
+                                        if (cartProd?.item == prod.item)
+                                        {
+                                            prod.quantity += cartProd.quantity;
+                                        }
+                                    }
+                                }
+                                CartServiceProxy.Current.Delete(tempInt);
+                                break;
+                            case 4:
+                                double total = 0;
+                                Console.WriteLine("Id. Item\tQuantity\tPrice");
+                                foreach (var prod in cart)
+                                {
+                                    Console.WriteLine(prod);
+                                    total += prod.price * prod.quantity;
+                                }
+                                Console.WriteLine("\nTotal: $ "+Math.Round((total*1.07),2));
+                                Console.WriteLine("\nThank you for shopping with us!");
+                                Environment.Exit(0);
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                Console.WriteLine("Error: Unknown Command");
+                                break;
                         }
                         break;
-                    case 4:
-                        Console.WriteLine("Enter Id to Delete: ");
-                        tempInt = int.Parse(Console.ReadLine() ?? "-1");
-                        ProductServiceProxy.Current.Delete(tempInt);
+                    case 'E':
                         break;
-                    case 5:
-                        break;
-                    default:
-                        Console.WriteLine("Error: Unknown Command");
-                        break;
-
+                    default: break;
                 }
-            }while (input != 5);
+            } while (choice != 'E');
         }
-        //void AddItem(List<string?> cart)
-        //{
-        //    var newProduct = Console.ReadLine() ?? "Error";
-
-        //    cart.Add(newProduct);
-        //}
-    } 
+    }
 }

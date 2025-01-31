@@ -10,16 +10,20 @@ namespace COP4870.Models
     {
         public string? item { get; set; }
         public int id { get; set; }
+        public int quantity { get; set; }
+        public double price { get; set; }
 
         public Product(){
             item = string.Empty;
         }
-        public Product(string? i, int tempInt){
+        public Product(string? i, int q, int p)
+        {
             item = i;
-            id = tempInt;
+            quantity = q;
+            price = p;
         }
         public string? Display { 
-            get { return $"{id}. {item}"; }
+            get { return $" {id}. {item}\t{quantity}\t\t$ {price}"; }
         }
         public override string ToString()
         {
