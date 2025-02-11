@@ -10,7 +10,11 @@ namespace COP4870.Services
     public class InventoryServiceProxy
     {
         private InventoryServiceProxy(){
-            Products = new List<Product?>();
+            Products = new List<Product?> {
+                new Product{id=1, item="Product 1", quantity=10, price=1.99 },
+                new Product{id=2, item="Product 2", quantity=10, price=1.99 },
+                new Product{id=3, item="Product 3", quantity=10, price=1.99 },
+            };
         }
         
         private int LastKey{
