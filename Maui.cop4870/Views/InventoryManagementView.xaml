@@ -9,7 +9,8 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <ListView
-            ItemsSource="{Binding Products}"
+            ItemsSource="{Binding Path=Products}"
+            SelectedItem="{Binding SelectedProduct}"
             >
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -28,6 +29,11 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button
+            Text="Edit"/>
+        <Button
+            Text="Delete"
+            Clicked="DeleteClicked"/>
         <Button
             Text="Go Back"
             Clicked="CancelClicked"/>
