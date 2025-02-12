@@ -8,6 +8,6 @@ namespace Maui.cop4870.ViewModels
 {
     public class ProductViewModel
     {
-
+        public string? Name { get; set; }
     }
 }

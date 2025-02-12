@@ -13,4 +13,7 @@ public partial class ProductDetails : ContentPage
 	{
 		Shell.Current.GoToAsync("//InventoryManagement");
 	}
+	private void OkClicked(object sender, EventArgs e)
+	{
+    }
 }
