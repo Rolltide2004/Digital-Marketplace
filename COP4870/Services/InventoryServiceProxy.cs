@@ -59,5 +59,9 @@ namespace COP4870.Services
             Products.Remove(product);
             return product;
         }
+        public Product? GetById(int id)
+        {
+            return Products.FirstOrDefault(p => p.id == id);
+        }
     }
 }

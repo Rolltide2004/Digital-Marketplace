@@ -38,5 +38,9 @@ namespace Maui.cop4870.ViewModels
             NotifyPropertyChanged("Products");
             return item;
         }
+        public void RefreshProductList()
+        {
+            NotifyPropertyChanged(nameof(Products));
+        }
     }
 }

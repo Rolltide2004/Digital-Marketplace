@@ -23,4 +23,15 @@ public partial class InventoryManagementView : ContentPage
     {
         Shell.Current.GoToAsync("//Product");
     }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        (BindingContext as InventoryManagementViewModel)?.RefreshProductList();
+    }
+
+    private void EditClicked(object sender, EventArgs e)
+    {
+        var productId = (BindingContext as InventoryManagementViewModel)?.SelectedProduct?.id;
+        Shell.Current.GoToAsync($"//Product?productId={productId}");
+    }
 }

@@ -4,13 +4,14 @@ using Maui.cop4870.ViewModels;
 
 namespace Maui.cop4870.Views;
 
+[QueryProperty(nameof(ProductId), "productId")]
 public partial class ProductDetails : ContentPage
 {
 	public ProductDetails()
 	{
 		InitializeComponent();
-		BindingContext = new ProductViewModel();
 	}
+	public int ProductId { get; set; }
 	private void GoBackClicked(object sender, EventArgs e)
 	{
 		Shell.Current.GoToAsync("//InventoryManagement");
@@ -21,4 +22,16 @@ public partial class ProductDetails : ContentPage
         InventoryServiceProxy.Current.AddOrUpdate(new Product { item = name });
         Shell.Current.GoToAsync("//InventoryManagement");
     }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+		if (ProductId == 0)
+		{
+			BindingContext = new ProductViewModel();
+		}
+		else
+		{
+			BindingContext = new ProductViewModel(InventoryServiceProxy.Current.GetById(ProductId));
+        }
+	}
 }
