@@ -13,11 +13,11 @@ namespace Maui.cop4870.ViewModels
         public string? Name
         {
             get {
-                return Model.item ?? string.Empty;
+                return Model.name ?? string.Empty;
             }
             set {
-                if (Model!=null && Model.item != value) {
-                    Model.item = value;
+                if (Model!=null && Model.name != value) {
+                    Model.name = value;
                 }
             }
         }

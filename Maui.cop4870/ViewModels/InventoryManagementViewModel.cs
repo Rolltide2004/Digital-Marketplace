@@ -30,7 +30,7 @@ namespace Maui.cop4870.ViewModels
         public ObservableCollection<Product?> Products
         {
             get {
-                var filteredList = _svc.Products.Where(p => p?.item?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                var filteredList = _svc.Products.Where(p => p?.name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
                 return new ObservableCollection<Product?>(filteredList);
             }
         }

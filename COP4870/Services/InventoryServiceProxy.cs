@@ -11,9 +11,9 @@ namespace COP4870.Services
     {
         private InventoryServiceProxy(){
             Products = new List<Product?> {
-                new Product{id=1, item="Product 1", quantity=10, price=1.99 },
-                new Product{id=2, item="Product 2", quantity=10, price=1.99 },
-                new Product{id=3, item="Product 3", quantity=10, price=1.99 },
+                new Product{id=1, name="Product 1", quantity=10, price=1.99 },
+                new Product{id=2, name="Product 2", quantity=10, price=1.99 },
+                new Product{id=3, name="Product 3", quantity=10, price=1.99 },
             };
         }
         

@@ -45,7 +45,7 @@ namespace MyApp
                                 double price = double.Parse(Console.ReadLine() ?? "0");
                                 InventoryServiceProxy.Current.AddOrUpdate(new Product
                                 {
-                                    item = item,
+                                    name = item,
                                     quantity = quantity,
                                     price = price
                                 });
@@ -65,7 +65,7 @@ namespace MyApp
                                 if (selectedProd != null)
                                 {
                                     Console.WriteLine("Enter new Item: ");
-                                    selectedProd.item = Console.ReadLine() ?? "ERROR";
+                                    selectedProd.name = Console.ReadLine() ?? "ERROR";
                                     Console.WriteLine("Enter new Quantity: ");
                                     selectedProd.quantity = int.Parse(Console.ReadLine() ?? "0");
                                     Console.WriteLine("Enter new Price: ");
@@ -99,14 +99,14 @@ namespace MyApp
                                 int quantity = int.Parse(Console.ReadLine() ?? "0");
                                 foreach (var prod in inventory)
                                 {
-                                    if (prod?.item == item)
+                                    if (prod?.name == item)
                                     {
                                         /*add if inventory has stock*/
                                         if (prod?.quantity >= quantity)
                                         {
                                             CartServiceProxy.Current.AddOrUpdate(new Product
                                             {
-                                                item = item,
+                                                name = item,
                                                 quantity = quantity,
                                                 price = prod.price
                                             });
@@ -133,7 +133,7 @@ namespace MyApp
                                     Console.WriteLine("Enter new Quantity: ");
                                     int temp = int.Parse(Console.ReadLine() ?? "0");
                                     foreach (var prod in inventory) {
-                                        if (prod.item == selectedProd.item && prod.quantity>= temp) { 
+                                        if (prod.name == selectedProd.name && prod.quantity>= temp) { 
                                             prod.quantity += (tempInt-temp);
                                             selectedProd.quantity = temp;
                                         }
@@ -148,7 +148,7 @@ namespace MyApp
                                 {
                                     foreach (var cartProd in cart)
                                     {
-                                        if (cartProd?.item == prod.item)
+                                        if (cartProd?.name == prod.name)
                                         {
                                             prod.quantity += cartProd.quantity;
                                         }
