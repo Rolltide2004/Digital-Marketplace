@@ -13,7 +13,7 @@ namespace Maui.cop4870.ViewModels
         public string? Name
         {
             get {
-                return Model.Name ?? string.Empty;
+                return Model?.Product.name ?? string.Empty;
             }
             set {
                 if (Model!=null && Model.Name != value) {
