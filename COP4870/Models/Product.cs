@@ -25,5 +25,9 @@ namespace COP4870.Models
         public string? Display { 
             get { return $" {Id}. {Name}\t{Quantity}\t\t$ {Price}"; }
         }
+        public override string ToString()
+        {
+            return Display ?? string.Empty;
+        }
     }
 }

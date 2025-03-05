@@ -13,6 +13,11 @@ namespace Maui.cop4870
         {
             Shell.Current.GoToAsync("//InventoryManagement");
         }
+
+        private void ShopClicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("//ShoppingManagement");
+        }
     }
 
 }

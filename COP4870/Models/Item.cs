@@ -11,6 +11,10 @@ namespace COP4870.Models
         public int Id { get; set; }
         public Product Product { get; set; }
         public int? Quantity { get; set; }
+        public override string ToString()
+        {
+            return $"{Product.ToString()} \t\tQuantity:{Quantity}";
+        }
         public string Display { 
             get {
                 return Product?.Display ?? string.Empty;
