@@ -21,6 +21,16 @@ namespace Maui.cop4870.ViewModels
                 }
             }
         }
+        public int? Quantity { 
+            get {
+                return Model?.Quantity;
+            }
+            set {
+                if (Model != null && value!=null && Model.Quantity != value) {
+                    Model.Quantity = value;
+                }
+            }
+        }
         public Item? Model { get; set; }
         public void AddOrUpdate() {
             InventoryServiceProxy.Current.AddOrUpdate(Model);
