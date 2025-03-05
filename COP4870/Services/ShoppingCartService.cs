@@ -10,8 +10,9 @@ namespace COP4870.Services
 {
     public class ShoppingCartService
     {
-        private List<Product> items;
-        public List<Product> CartItems { 
+        private InventoryServiceProxy _prodsvc;
+        private List<Item> items;
+        public List<Item> CartItems { 
             get { 
                 return items; 
             } 
@@ -26,7 +27,7 @@ namespace COP4870.Services
         }
         private static ShoppingCartService? instance;
         private ShoppingCartService() { 
-            items = new List<Product>(); 
+            items = new List<Item>(); 
         }
     }
 }
