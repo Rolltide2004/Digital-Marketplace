@@ -43,12 +43,13 @@ namespace COP4870.Services
         
         public List<Item?> Products { get; private set; }
         
-        public Item AddOrUpdate(Item product){
-            if (product.Id == 0){
-                product.Id = LastKey + 1;
-                Products.Add(product);
+        public Item AddOrUpdate(Item item){
+            if (item.Id == 0){
+                item.Id = LastKey + 1;
+                item.Product.Id = item.Id;
+                Products.Add(item);
             }
-            return product;
+            return item;
         }
         
         public Item? Delete(int id){

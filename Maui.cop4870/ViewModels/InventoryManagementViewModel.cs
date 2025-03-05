@@ -14,7 +14,7 @@ namespace Maui.cop4870.ViewModels
 {
     public class InventoryManagementViewModel : INotifyPropertyChanged
     {
-        public Product? SelectedProduct { get; set; }
+        public Item? SelectedProduct { get; set; }
         public string? Query { get; set; }
         private InventoryServiceProxy _svc = InventoryServiceProxy.Current;
 

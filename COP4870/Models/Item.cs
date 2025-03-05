@@ -11,5 +11,13 @@ namespace COP4870.Models
         public int Id { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
+        public string Display { 
+            get {
+                return Product?.Display ?? string.Empty;
+            }   
+        }
+        public Item() {
+            Product = new Product();
+        }
     }
 }
