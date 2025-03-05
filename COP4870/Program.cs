@@ -45,9 +45,9 @@ namespace MyApp
                                 double price = double.Parse(Console.ReadLine() ?? "0");
                                 InventoryServiceProxy.Current.AddOrUpdate(new Product
                                 {
-                                    name = item,
-                                    quantity = quantity,
-                                    price = price
+                                    Name = item,
+                                    Quantity = quantity,
+                                    Price = price
                                 });
                                 break;
                             case 2:
@@ -61,15 +61,15 @@ namespace MyApp
                             case 3:
                                 Console.WriteLine("Enter Id to update: ");
                                 tempInt = int.Parse(Console.ReadLine() ?? "-1");
-                                var selectedProd = inventory.FirstOrDefault(p => p.id == tempInt);
+                                var selectedProd = inventory.FirstOrDefault(p => p.Id == tempInt);
                                 if (selectedProd != null)
                                 {
                                     Console.WriteLine("Enter new Item: ");
-                                    selectedProd.name = Console.ReadLine() ?? "ERROR";
+                                    selectedProd.Name = Console.ReadLine() ?? "ERROR";
                                     Console.WriteLine("Enter new Quantity: ");
-                                    selectedProd.quantity = int.Parse(Console.ReadLine() ?? "0");
+                                    selectedProd.Quantity = int.Parse(Console.ReadLine() ?? "0");
                                     Console.WriteLine("Enter new Price: ");
-                                    selectedProd.price = double.Parse(Console.ReadLine() ?? "0");
+                                    selectedProd.Price = double.Parse(Console.ReadLine() ?? "0");
                                     InventoryServiceProxy.Current.AddOrUpdate(selectedProd);
                                 }
                                 break;
@@ -99,18 +99,18 @@ namespace MyApp
                                 int quantity = int.Parse(Console.ReadLine() ?? "0");
                                 foreach (var prod in inventory)
                                 {
-                                    if (prod?.name == item)
+                                    if (prod?.Name == item)
                                     {
                                         /*add if inventory has stock*/
-                                        if (prod?.quantity >= quantity)
+                                        if (prod?.Quantity >= quantity)
                                         {
                                             CartServiceProxy.Current.AddOrUpdate(new Product
                                             {
-                                                name = item,
-                                                quantity = quantity,
-                                                price = prod.price
+                                                Name = item,
+                                                Quantity = quantity,
+                                                Price = prod.Price
                                             });
-                                            prod.quantity -= quantity;
+                                            prod.Quantity -= quantity;
                                         }
                                         break;
                                     }
@@ -126,16 +126,16 @@ namespace MyApp
                             case 3:
                                 Console.WriteLine("Enter Id to Update (int): ");
                                 tempInt = int.Parse(Console.ReadLine() ?? "-1");
-                                var selectedProd = cart.FirstOrDefault(p => p.id == tempInt);
+                                var selectedProd = cart.FirstOrDefault(p => p.Id == tempInt);
                                 if (selectedProd != null)
                                 {
-                                    tempInt = selectedProd.quantity;
+                                    tempInt = selectedProd.Quantity;
                                     Console.WriteLine("Enter new Quantity: ");
                                     int temp = int.Parse(Console.ReadLine() ?? "0");
                                     foreach (var prod in inventory) {
-                                        if (prod.name == selectedProd.name && prod.quantity>= temp) { 
-                                            prod.quantity += (tempInt-temp);
-                                            selectedProd.quantity = temp;
+                                        if (prod.Name == selectedProd.Name && prod.Quantity>= temp) { 
+                                            prod.Quantity += (tempInt-temp);
+                                            selectedProd.Quantity = temp;
                                         }
                                     }
                                 }
@@ -148,9 +148,9 @@ namespace MyApp
                                 {
                                     foreach (var cartProd in cart)
                                     {
-                                        if (cartProd?.name == prod.name)
+                                        if (cartProd?.Name == prod.Name)
                                         {
-                                            prod.quantity += cartProd.quantity;
+                                            prod.Quantity += cartProd.Quantity;
                                         }
                                     }
                                 }
@@ -162,7 +162,7 @@ namespace MyApp
                                 foreach (var prod in cart)
                                 {
                                     Console.WriteLine(prod);
-                                    total += prod.price * prod.quantity;
+                                    total += prod.Price * prod.Quantity;
                                 }
                                 Console.WriteLine("\nTotal: $ "+Math.Round((total*1.07),2));
                                 Console.WriteLine("\nThank you for shopping with us!");
