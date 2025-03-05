@@ -23,7 +23,7 @@ namespace COP4870.Services
                     return 0;
                 }
 
-                return Products.Select(p => p?.id ?? 0).Max();
+                return Products.Select(p => p?.Id ?? 0).Max();
             }
         }
 
@@ -49,9 +49,9 @@ namespace COP4870.Services
 
         public Product AddOrUpdate(Product product)
         {
-            if (product.id == 0)
+            if (product.Id == 0)
             {
-                product.id = LastKey + 1;
+                product.Id = LastKey + 1;
                 Products.Add(product);
             }
             return product;
@@ -63,7 +63,7 @@ namespace COP4870.Services
             {
                 return null;
             }
-            Product? product = Products.FirstOrDefault(p => p.id == id);
+            Product? product = Products.FirstOrDefault(p => p.Id == id);
             Products.Remove(product);
             return product;
         }

@@ -14,7 +14,7 @@ namespace Maui.cop4870.ViewModels
 {
     public class InventoryManagementViewModel : INotifyPropertyChanged
     {
-        public Product? SelectedProduct { get; set; }
+        public Item? SelectedProduct { get; set; }
         public string? Query { get; set; }
         private InventoryServiceProxy _svc = InventoryServiceProxy.Current;
 
@@ -27,16 +27,16 @@ namespace Maui.cop4870.ViewModels
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ObservableCollection<Product?> Products
+        public ObservableCollection<Item?> Products
         {
             get {
-                var filteredList = _svc.Products.Where(p => p?.name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
-                return new ObservableCollection<Product?>(filteredList);
+                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
             }
         }
-        public Product? Delete()
+        public Item? Delete()
         {
-            var item = _svc.Delete(SelectedProduct?.id ?? 0);
+            var item = _svc.Delete(SelectedProduct?.Id ?? 0);
             NotifyPropertyChanged("Products");
             return item;
         }

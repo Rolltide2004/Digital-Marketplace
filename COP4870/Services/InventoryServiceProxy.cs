@@ -9,11 +9,11 @@ namespace COP4870.Services
 {
     public class InventoryServiceProxy
     {
-        private InventoryServiceProxy(){
-            Products = new List<Product?> {
-                new Product{id=1, name="Product 1", quantity=10, price=1.99 },
-                new Product{id=2, name="Product 2", quantity=10, price=1.99 },
-                new Product{id=3, name="Product 3", quantity=10, price=1.99 },
+        private InventoryServiceProxy() {
+            Products = new List<Item?> {
+                new Item{ Product = new Product{Id=1, Name="Product 1", Quantity=10, Price=1.99 }, Id=1, Quantity=1},
+                new Item{ Product = new Product{Id=2, Name="Product 2", Quantity=10, Price=1.99 }, Id=2, Quantity=2},
+                new Item{ Product = new Product{Id=3, Name="Product 3", Quantity=10, Price=1.99 }, Id=3, Quantity=3},
             };
         }
         
@@ -23,7 +23,7 @@ namespace COP4870.Services
                     return 0;
                 }
 
-                return Products.Select(p => p?.id ?? 0).Max();
+                return Products.Select(p => p?.Id ?? 0).Max();
             }
         }
         
@@ -41,27 +41,28 @@ namespace COP4870.Services
             }
         }
         
-        public List<Product?> Products { get; private set; }
+        public List<Item?> Products { get; private set; }
         
-        public Product AddOrUpdate(Product product){
-            if (product.id == 0){
-                product.id = LastKey + 1;
-                Products.Add(product);
+        public Item AddOrUpdate(Item item){
+            if (item.Id == 0){
+                item.Id = LastKey + 1;
+                item.Product.Id = item.Id;
+                Products.Add(item);
             }
-            return product;
+            return item;
         }
         
-        public Product? Delete(int id){
+        public Item? Delete(int id){
             if (id == 0){
                 return null;
             }
-            Product? product = Products.FirstOrDefault(p => p.id == id);
+            Item? product = Products.FirstOrDefault(p => p.Id == id);
             Products.Remove(product);
             return product;
         }
-        public Product? GetById(int id)
+        public Item? GetById(int id)
         {
-            return Products.FirstOrDefault(p => p.id == id);
+            return Products.FirstOrDefault(p => p.Id == id);
         }
     }
 }
