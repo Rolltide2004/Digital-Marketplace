@@ -9,11 +9,11 @@ namespace COP4870.Services
 {
     public class InventoryServiceProxy
     {
-        private InventoryServiceProxy(){
-            Products = new List<Product?> {
-                new Product{Id=1, Name="Product 1", Quantity=10, Price=1.99 },
-                new Product{Id=2, Name="Product 2", Quantity=10, Price=1.99 },
-                new Product{Id=3, Name="Product 3", Quantity=10, Price=1.99 },
+        private InventoryServiceProxy() {
+            Products = new List<Item?> {
+                new Item{ Product = new Product{Id=1, Name="Product 1", Quantity=10, Price=1.99 }, Id=1, Quantity=1},
+                new Item{ Product = new Product{Id=2, Name="Product 2", Quantity=10, Price=1.99 }, Id=2, Quantity=2},
+                new Item{ Product = new Product{Id=3, Name="Product 3", Quantity=10, Price=1.99 }, Id=3, Quantity=3},
             };
         }
         
@@ -41,9 +41,9 @@ namespace COP4870.Services
             }
         }
         
-        public List<Product?> Products { get; private set; }
+        public List<Item?> Products { get; private set; }
         
-        public Product AddOrUpdate(Product product){
+        public Item AddOrUpdate(Item product){
             if (product.Id == 0){
                 product.Id = LastKey + 1;
                 Products.Add(product);
@@ -51,15 +51,15 @@ namespace COP4870.Services
             return product;
         }
         
-        public Product? Delete(int id){
+        public Item? Delete(int id){
             if (id == 0){
                 return null;
             }
-            Product? product = Products.FirstOrDefault(p => p.Id == id);
+            Item? product = Products.FirstOrDefault(p => p.Id == id);
             Products.Remove(product);
             return product;
         }
-        public Product? GetById(int id)
+        public Item? GetById(int id)
         {
             return Products.FirstOrDefault(p => p.Id == id);
         }

@@ -13,22 +13,22 @@ namespace Maui.cop4870.ViewModels
         public string? Name
         {
             get {
-                return Model?.Product.name ?? string.Empty;
+                return Model?.Product.Name ?? string.Empty;
             }
             set {
-                if (Model!=null && Model.Name != value) {
-                    Model.Name = value;
+                if (Model!=null && Model?.Product.Name != value) {
+                    Model.Product.Name = value;
                 }
             }
         }
-        public Product? Model { get; set; }
+        public Item? Model { get; set; }
         public void AddOrUpdate() {
             InventoryServiceProxy.Current.AddOrUpdate(Model);
         }
         public ProductViewModel() {
-            Model = new Product();
+            Model = new Item();
         }
-        public ProductViewModel(Product? model) {
+        public ProductViewModel(Item? model) {
             Model = model;
         }
     }
