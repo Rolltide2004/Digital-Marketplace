@@ -13,15 +13,23 @@ namespace COP4870.Models
         public int? Quantity { get; set; }
         public override string ToString()
         {
-            return $"{Product.ToString()} \t\tQuantity:{Quantity}";
+            return Display ?? string.Empty;
+            //return $"{Product.ToString()}\t\tQuantity:{Quantity}";
         }
         public string Display { 
             get {
-                return Product?.Display ?? string.Empty;
+                return $"{Product.ToString()}\t\t{Quantity}";
+                //return Product?.Display ?? string.Empty;
             }   
         }
         public Item() {
             Product = new Product();
+            Quantity = 0;
+        }
+        public Item(Item i) {
+            Product = new Product(i.Product);
+            Quantity = i.Quantity;
+            Id = i.Id;
         }
     }
 }

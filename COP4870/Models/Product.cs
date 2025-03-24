@@ -22,12 +22,16 @@ namespace COP4870.Models
             Quantity = q;
             Price = p;
         }
-        public string? Display { 
-            get { return $" {Id}. {Name}\t{Quantity}\t\t$ {Price}"; }
+        public string? Display {
+            get { return $" {Id}. {Name}"; }//\t{Quantity}\t\t$ {Price}"; }
         }
         public override string ToString()
         {
             return Display ?? string.Empty;
+        }
+        public Product(Product p) {
+            Name = p.Name;
+            Id = p.Id;
         }
     }
 }
