@@ -37,6 +37,10 @@ namespace Maui.cop4870.ViewModels
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        public void RefreshUX() {
+            NotifyPropertyChanged(nameof(Inventory));
+            NotifyPropertyChanged(nameof(ShoppingCart));
+        }
 
         public void PurchaseItem() {
             if (SelectedItem != null)
@@ -51,7 +55,7 @@ namespace Maui.cop4870.ViewModels
             }
         }
         public void ReturnItem() {
-            if (SelectedItem != null) {
+            if (SelectedCartItem != null) {
                 var shouldRefresh = SelectedCartItem.Quantity >= 1;
                 var updatedItem = _cartSvc.ReturnItem(SelectedCartItem);
                 if (updatedItem != null && shouldRefresh)
