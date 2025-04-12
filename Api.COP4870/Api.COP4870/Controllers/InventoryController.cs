@@ -20,9 +20,14 @@ public class InventoryController : ControllerBase
     {
         return new List<Item?>
         {
-                new Item{ Product = new ProductDTO{Id=1, Name="Product 1", Quantity=10, Price=1.99 }, Id=1, Quantity=1},
-                new Item{ Product = new ProductDTO{Id=2, Name="Product 2", Quantity=10, Price=1.99 }, Id=2, Quantity=2},
-                new Item{ Product = new ProductDTO{Id=3, Name="Product 3", Quantity=10, Price=1.99 }, Id=3, Quantity=3},
+                new Item{ Product = new ProductDTO{Id=1, Name="Product 1 WEB", Quantity=10, Price=1.99 }, Id=1, Quantity=1},
+                new Item{ Product = new ProductDTO{Id=2, Name="Product 2 WEB", Quantity=10, Price=1.99 }, Id=2, Quantity=2},
+                new Item{ Product = new ProductDTO{Id=3, Name="Product 3 WEB", Quantity=10, Price=1.99 }, Id=3, Quantity=3},
         };
+        //return new List<Product> { 
+        //    new Product {  Id = 1, Name = "Something 1"},
+        //    new Product {  Id = 2, Name = "Something 2"},
+        //    new Product {  Id = 3, Name = "Something 3"}
+        //};
     }
 }

@@ -10,21 +10,21 @@ namespace Maui.cop4870.ViewModels
     {
         private InventoryServiceProxy _invSvc = InventoryServiceProxy.Current;
         private ShoppingCartService _cartSvc = ShoppingCartService.Current;
-        public Item? SelectedItem { get; set; }
-        public Item? SelectedCartItem { get; set; }
-        public ObservableCollection<Item?> Inventory
+        public ItemViewModel? SelectedItem { get; set; }
+        public ItemViewModel? SelectedCartItem { get; set; }
+        public ObservableCollection<ItemViewModel?> Inventory
         {
             get {
-                return new ObservableCollection<Item?>(_invSvc.Products
-                    .Where(i => i?.Quantity > 0));
+                return new ObservableCollection<ItemViewModel?>(_invSvc.Products
+                    .Where(i => i?.Quantity > 0).Select(m => new ItemViewModel(m)));
             }
         }
-        public ObservableCollection<Item?> ShoppingCart
+        public ObservableCollection<ItemViewModel?> ShoppingCart
         {
             get
             {
-                return new ObservableCollection<Item?>(_cartSvc.CartItems
-                    .Where(i => i?.Quantity > 0));
+                return new ObservableCollection<ItemViewModel?>(_cartSvc.CartItems
+                    .Where(i => i?.Quantity > 0).Select(m => new ItemViewModel(m)));
             }
         }
 
@@ -45,8 +45,8 @@ namespace Maui.cop4870.ViewModels
         public void PurchaseItem() {
             if (SelectedItem != null)
             {
-                var shouldRefresh = SelectedItem.Quantity >= 1;
-                var updatedItem = _cartSvc.AddOrUpdate(SelectedItem);
+                var shouldRefresh = SelectedItem.Model.Quantity >= 1;
+                var updatedItem = _cartSvc.AddOrUpdate(SelectedItem.Model);
                 if(updatedItem != null && shouldRefresh) 
                 {
                     NotifyPropertyChanged(nameof(Inventory));
@@ -56,8 +56,8 @@ namespace Maui.cop4870.ViewModels
         }
         public void ReturnItem() {
             if (SelectedCartItem != null) {
-                var shouldRefresh = SelectedCartItem.Quantity >= 1;
-                var updatedItem = _cartSvc.ReturnItem(SelectedCartItem);
+                var shouldRefresh = SelectedCartItem.Model.Quantity >= 1;
+                var updatedItem = _cartSvc.ReturnItem(SelectedCartItem.Model);
                 if (updatedItem != null && shouldRefresh)
                 {
                     NotifyPropertyChanged(nameof(Inventory));
