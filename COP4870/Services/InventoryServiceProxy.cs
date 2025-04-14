@@ -82,9 +82,12 @@ namespace COP4870.Services
             if (id == 0){
                 return null;
             }
+            var result = new WebRequestHandler().Delete($"/Inventory/{id}").Result;
+            
             Item? product = Products.FirstOrDefault(p => p.Id == id);
             Products.Remove(product);
-            return product;
+
+            return JsonConvert.DeserializeObject<Item>(result);
         }
         public Item? GetById(int id)
         {
