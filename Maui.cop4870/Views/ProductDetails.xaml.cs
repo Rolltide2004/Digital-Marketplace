@@ -19,7 +19,7 @@ public partial class ProductDetails : ContentPage
 	}
 	private void OkClicked(object sender, EventArgs e)
 	{
-		(BindingContext as ProductViewModel)?.AddOrUpdate();
+		(BindingContext as ProductViewModel).AddOrUpdate();
 		
         Shell.Current.GoToAsync("//InventoryManagement");
     }

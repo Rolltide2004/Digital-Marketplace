@@ -22,17 +22,7 @@ namespace COP4870.Services
             //    new Item{ Product = new ProductDTO{Id=3, Name="Product 3", Quantity=10, Price=1.99 }, Id=3, Quantity=3},
             //};
         }
-        
-        private int LastKey{
-            get{
-                if (!Products.Any()){
-                    return 0;
-                }
-
-                return Products.Select(p => p?.Id ?? 0).Max();
-            }
-        }
-        
+    
         private static InventoryServiceProxy? instance;
         private static object instanceLock = new object();
         
@@ -48,21 +38,26 @@ namespace COP4870.Services
         }
         
         public List<Item?> Products { get; private set; }
-        
-        public Item AddOrUpdate(Item item){
-            if (item.Id == 0){
-                item.Id = LastKey + 1;
-                item.Product.Id = item.Id;
-                Products.Add(item);
+
+        public Item AddOrUpdate(Item item) {
+            var response = new WebRequestHandler().Post("/Inventory", item).Result;
+            var newItem = JsonConvert.DeserializeObject<Item>(response);
+            if (newItem == null)
+            {
+                return item;
+            }
+            if (item.Id == 0) 
+            {
+                Products.Add(newItem);
             }
             else
             {
                 var existingItem = Products.FirstOrDefault(p => p.Id == item.Id);
                 var index = Products.IndexOf(existingItem);
                 Products.RemoveAt(index);
-                Products.Insert(index, new Item(item));
+                Products.Insert(index, new Item(newItem));
             }
-                return item;
+            return item;
         }
         public Item? PurchaseItem(Item? item)
         {
