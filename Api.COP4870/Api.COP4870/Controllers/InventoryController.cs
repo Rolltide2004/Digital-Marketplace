@@ -1,6 +1,7 @@
 using Api.COP4870.Controllers.EC;
 using COP4870.DTO;
 using COP4870.Models;
+using COP4870.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.COP4870.Controllers;
@@ -42,7 +43,7 @@ public class InventoryController : ControllerBase
     }
 
     [HttpPost("Search")]
-    public IEnumerable<Item> Search([FromBody]string query) {
-        return new InventoryEC().Get(query);
+    public IEnumerable<Item> Search([FromBody]QueryRequest query) {
+        return new InventoryEC().Get(query.Query);
     }
 }

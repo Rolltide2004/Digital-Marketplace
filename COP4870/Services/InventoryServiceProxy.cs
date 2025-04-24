@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using COP4870.DTO;
 using COP4870.Models;
+using COP4870.Util;
 using COP4870.Utilities;
 using Newtonsoft.Json;
 
@@ -39,8 +40,11 @@ namespace COP4870.Services
         
         public List<Item?> Products { get; private set; }
 
-        public async Task<IEnumerable<Item?>> Search(string? query) { 
-            var response = await new WebRequestHandler().Post("/Inventory/Search", query);
+        public async Task<IEnumerable<Item?>> Search(string? query) {
+            if (query == null) {
+                return new List<Item>();
+            }
+            var response = await new WebRequestHandler().Post("/Inventory/Search", new QueryRequest { Query = query } );
             Products = JsonConvert.DeserializeObject<List<Item?>>(response) ?? new List<Item?>();
             return Products;
         }
