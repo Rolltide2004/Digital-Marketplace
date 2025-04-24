@@ -25,6 +25,9 @@ namespace Api.COP4870.Controllers.EC.Database
                 return inventory;
             }
         }
-
+        public static IEnumerable<Item> Search(string? query) {
+            return Inventory.Where(p => p?.Product?.Name?.ToLower()
+                .Contains(query?.ToLower() ?? string.Empty) ?? false);
+        }
     }
 }

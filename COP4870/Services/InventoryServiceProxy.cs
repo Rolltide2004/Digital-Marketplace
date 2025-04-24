@@ -39,6 +39,12 @@ namespace COP4870.Services
         
         public List<Item?> Products { get; private set; }
 
+        public async Task<IEnumerable<Item?>> Search(string? query) { 
+            var response = await new WebRequestHandler().Post("/Inventory/Search", query);
+            Products = JsonConvert.DeserializeObject<List<Item?>>(response) ?? new List<Item?>();
+            return Products;
+        }
+
         public Item AddOrUpdate(Item item) {
             var response = new WebRequestHandler().Post("/Inventory", item).Result;
             var newItem = JsonConvert.DeserializeObject<Item>(response);

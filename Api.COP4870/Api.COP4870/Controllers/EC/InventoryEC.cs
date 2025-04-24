@@ -11,6 +11,9 @@ namespace Api.COP4870.Controllers.EC
         {
             return FakeDatabase.Inventory;
         }
+        public IEnumerable<Item> Get(string? query) {
+            return FakeDatabase.Search(query).Take(100) ?? new List<Item>();
+        }
         public Item? Delete(int id) {
             var itemToDelete = FakeDatabase.Inventory.FirstOrDefault(i => i.Id == id);
             if (itemToDelete != null) {

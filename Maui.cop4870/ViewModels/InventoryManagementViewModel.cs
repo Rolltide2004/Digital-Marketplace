@@ -44,5 +44,11 @@ namespace Maui.cop4870.ViewModels
         {
             NotifyPropertyChanged(nameof(Products));
         }
+        public async Task<bool> Search() 
+        {
+            var result = await _svc.Search(Query);
+            NotifyPropertyChanged(nameof(Products));
+            return true;
+        }
     }
 }

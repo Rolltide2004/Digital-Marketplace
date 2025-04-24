@@ -33,10 +33,16 @@ public class InventoryController : ControllerBase
     {
         return new InventoryEC().Delete(id);
     }
+
     [HttpPost]
     public Item? AddOrUpdate([FromBody]Item item) {
         
         var newItem = new InventoryEC().AddOrUpdate(item);
         return item;
+    }
+
+    [HttpPost("Search")]
+    public IEnumerable<Item> Search([FromBody]string query) {
+        return new InventoryEC().Get(query);
     }
 }
