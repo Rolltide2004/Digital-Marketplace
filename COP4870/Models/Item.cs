@@ -15,8 +15,6 @@ namespace COP4870.Models
         public ProductDTO Product { get; set; }
         public int? Quantity { get; set; }
 
-        
-
         public override string ToString()
         {
             return Display ?? string.Empty;
