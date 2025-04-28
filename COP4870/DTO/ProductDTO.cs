@@ -30,7 +30,7 @@ namespace COP4870.DTO
         }
         public string? Display
         {
-            get { return $" {Id}. {Name}"; }//\t{Quantity}\t\t$ {Price}"; }
+            get { return $" {Name}"; }
         }
         public override string ToString()
         {

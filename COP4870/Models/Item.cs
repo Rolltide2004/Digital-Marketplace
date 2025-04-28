@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace COP4870.Models
         public int Id { get; set; }
         public ProductDTO Product { get; set; }
         public int? Quantity { get; set; }
+        public double? Price { get; set; }
 
         public override string ToString()
         {
@@ -21,17 +23,19 @@ namespace COP4870.Models
         }
         public string Display { 
             get {
-                return $"{Id}. {Product}\t\t{Quantity}";
+                return $"{Id}. {Product}\t\t{Price}\t\t{Quantity}";
             }   
         }
         public Item() {
             Product = new ProductDTO();
             Quantity = 0;
+            Price = 0.00;
         }
 
         public Item(Item i) {
             Product = new ProductDTO(i.Product);
             Quantity = i.Quantity;
+            Price = i.Price;
             Id = i.Id;
         }
     }

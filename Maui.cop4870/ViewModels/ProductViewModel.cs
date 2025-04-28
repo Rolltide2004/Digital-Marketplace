@@ -32,6 +32,20 @@ namespace Maui.cop4870.ViewModels
                 }
             }
         }
+        public double? Price
+        {
+            get
+            {
+                return Model?.Price;
+            }
+            set
+            {
+                if (Model != null && value != null && Model.Price != value)
+                {
+                    Model.Price = value;
+                }
+            }
+        }
         public Item? Model { get; set; }
         public void AddOrUpdate() {
             InventoryServiceProxy.Current.AddOrUpdate(Model);
