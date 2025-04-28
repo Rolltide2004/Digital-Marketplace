@@ -21,7 +21,7 @@ namespace COP4870.Models
         }
         public string Display { 
             get {
-                return $"{Product}\t\t{Quantity}";
+                return $"{Id}. {Product}\t\t{Quantity}";
             }   
         }
         public Item() {

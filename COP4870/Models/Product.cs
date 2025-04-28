@@ -24,7 +24,7 @@ namespace COP4870.Models
             Price = p;
         }
         public string? Display {
-            get { return $" {Id}. {Name}"; }
+            get { return $" {Name}\t\t{Price}"; }
         }
         public override string ToString()
         {

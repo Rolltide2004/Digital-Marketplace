@@ -97,12 +97,15 @@ namespace Api.COP4870.Controllers.EC.Database
 
         public bool Delete(string type, string id)
         {
-
             string path = $"{_productRoot}\\{id}.json";
-            File.Delete(path);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                return true;
+            }
 
             //TODO: refer to AddOrUpdate for an idea of how you can implement this.
-            return true;
+            return false;
         }
     }
 
