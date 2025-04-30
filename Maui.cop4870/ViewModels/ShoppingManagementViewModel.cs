@@ -12,6 +12,7 @@ namespace Maui.cop4870.ViewModels
         private ShoppingCartService _cartSvc = ShoppingCartService.Current;
         public ItemViewModel? SelectedItem { get; set; }
         public ItemViewModel? SelectedCartItem { get; set; }
+        public string? CartQuery { get; set; }
         public ObservableCollection<ItemViewModel?> Inventory
         {
             get {
@@ -49,8 +50,7 @@ namespace Maui.cop4870.ViewModels
                 var updatedItem = _cartSvc.AddOrUpdate(SelectedItem.Model);
                 if(updatedItem != null && shouldRefresh) 
                 {
-                    NotifyPropertyChanged(nameof(Inventory));
-                    NotifyPropertyChanged(nameof(ShoppingCart));
+                    RefreshUX();
                 }
             }
         }
@@ -60,10 +60,20 @@ namespace Maui.cop4870.ViewModels
                 var updatedItem = _cartSvc.ReturnItem(SelectedCartItem.Model);
                 if (updatedItem != null && shouldRefresh)
                 {
-                    NotifyPropertyChanged(nameof(Inventory));
-                    NotifyPropertyChanged(nameof(ShoppingCart));
+                    RefreshUX();
                 }
             }
+        }
+        public void Checkout()
+        {
+
+        }
+
+        public async Task<bool> Search()
+        {
+            var result = await _cartSvc.Search(CartQuery);
+            NotifyPropertyChanged(nameof(ShoppingCart));
+            return true;
         }
     }
 }

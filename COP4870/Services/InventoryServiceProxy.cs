@@ -16,12 +16,6 @@ namespace COP4870.Services
         private InventoryServiceProxy() {
             var productPayload = new WebRequestHandler().Get("/Inventory").Result;
             Products = JsonConvert.DeserializeObject<List<Item>>(productPayload) ?? new List<Item?>();
-
-            //Products = new List<Item?> {
-            //    new Item{ Product = new ProductDTO{Id=1, Name="Product 1", Quantity=10, Price=1.99 }, Id=1, Quantity=1},
-            //    new Item{ Product = new ProductDTO{Id=2, Name="Product 2", Quantity=10, Price=1.99 }, Id=2, Quantity=2},
-            //    new Item{ Product = new ProductDTO{Id=3, Name="Product 3", Quantity=10, Price=1.99 }, Id=3, Quantity=3},
-            //};
         }
     
         private static InventoryServiceProxy? instance;
@@ -41,7 +35,7 @@ namespace COP4870.Services
         public List<Item?> Products { get; private set; }
 
         public async Task<IEnumerable<Item?>> Search(string? query) {
-            if (query == null) {
+            if (query != null) {
                 return new List<Item>();
             }
             var response = await new WebRequestHandler().Post("/Inventory/Search", new QueryRequest { Query = query } );
@@ -52,6 +46,7 @@ namespace COP4870.Services
         public Item AddOrUpdate(Item item) {
             var response = new WebRequestHandler().Post("/Inventory", item).Result;
             var newItem = JsonConvert.DeserializeObject<Item>(response);
+
             if (newItem == null)
             {
                 return item;

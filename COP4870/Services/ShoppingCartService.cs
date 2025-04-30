@@ -5,6 +5,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using COP4870.Models;
+using COP4870.Util;
+using COP4870.Utilities;
+using Newtonsoft.Json;
 
 namespace COP4870.Services
 {
@@ -15,7 +18,7 @@ namespace COP4870.Services
         public List<Item> CartItems { 
             get { 
                 return items; 
-            } 
+            }
         }
         public static ShoppingCartService Current { 
             get {
@@ -26,13 +29,14 @@ namespace COP4870.Services
             } 
         }
         private static ShoppingCartService? instance;
-        private ShoppingCartService() { 
-            items = new List<Item>(); 
+        private ShoppingCartService() {
+            var productPayload = new WebRequestHandler().Get("/Cart").Result;
+            items = JsonConvert.DeserializeObject<List<Item>>(productPayload) ?? new List<Item?>();
         }
-        public Item? AddOrUpdate(Item item) 
+        public Item? AddOrUpdate(Item item)
         {
             var existingInvItem = _prodSvc.GetById(item.Id);
-            if(existingInvItem==null || existingInvItem.Quantity == 0)
+            if (existingInvItem == null || existingInvItem.Quantity == 0)
             {
                 return null;
             }
@@ -43,13 +47,14 @@ namespace COP4870.Services
             var existingItem = CartItems.FirstOrDefault(i => i.Id == item.Id);
             if (existingItem == null)
             {
-                var newItem = new Item(item);
-                newItem.Quantity = 1;
-                CartItems.Add(newItem);
-            } else
-            {
-                existingItem.Quantity++;
+                CartItems.Add(item);
             }
+            else
+            {
+                item.Quantity = ++existingItem.Quantity;
+            }
+            var response = new WebRequestHandler().Post("/Cart", item).Result;
+            var newItem = JsonConvert.DeserializeObject<Item>(response);
             return existingInvItem;
         }
         public Item? ReturnItem(Item? item)
@@ -59,9 +64,9 @@ namespace COP4870.Services
                 return null;
             }
             var itemToReturn = CartItems.FirstOrDefault(c => c.Id == item.Id);
+            
             if (itemToReturn != null)
             {
-                itemToReturn.Quantity--;
                 var inventoryItem = _prodSvc.Products.FirstOrDefault(p => p.Id == itemToReturn.Id);
                 if (inventoryItem == null)
                 {
@@ -69,10 +74,25 @@ namespace COP4870.Services
                 }
                 else
                 {
-                    inventoryItem.Quantity++;
+                    inventoryItem.Quantity += itemToReturn.Quantity;
                 }
+                itemToReturn.Quantity = 0;
             }
-            return itemToReturn;
+
+            var result = new WebRequestHandler().Delete($"/Cart/{item.Id}").Result;
+            return JsonConvert.DeserializeObject<Item>(result);
+            //return itemToReturn;
+        }
+
+        public async Task<IEnumerable<Item?>> Search(string? query)
+        {
+            if (query != null)
+            {
+                return new List<Item>();
+            }
+            var response = await new WebRequestHandler().Post("/Cart/Search", new QueryRequest { Query = query });
+            items = JsonConvert.DeserializeObject<List<Item?>>(response) ?? new List<Item?>();
+            return items;
         }
     }
 }
