@@ -23,7 +23,11 @@ namespace COP4870.Models
         }
         public string Display { 
             get {
-                return $"{Id}. {Product}\t\t{Price}\t\t{Quantity}";
+                if (Quantity > 0)
+                {
+                    return $"{Id}. {Product}\t\t{Price}\t\t{Quantity}";
+                }else 
+                    return null;
             }   
         }
         public Item() {

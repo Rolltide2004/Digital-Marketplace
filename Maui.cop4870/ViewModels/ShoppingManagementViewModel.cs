@@ -11,7 +11,7 @@ namespace Maui.cop4870.ViewModels
         private InventoryServiceProxy _invSvc = InventoryServiceProxy.Current;
         private ShoppingCartService _cartSvc = ShoppingCartService.Current;
         public ItemViewModel? SelectedItem { get; set; }
-        public ItemViewModel? SelectedCartItem { get; set; }
+        public Item? SelectedCartItem { get; set; }
         public string? CartQuery { get; set; }
         public ObservableCollection<ItemViewModel?> Inventory
         {
@@ -40,7 +40,7 @@ namespace Maui.cop4870.ViewModels
         }
         public void RefreshUX() {
             NotifyPropertyChanged(nameof(Inventory));
-            NotifyPropertyChanged(nameof(ShoppingCart));
+            NotifyPropertyChanged(nameof(CartItems));
         }
 
         public void PurchaseItem() {
@@ -56,8 +56,8 @@ namespace Maui.cop4870.ViewModels
         }
         public void ReturnItem() {
             if (SelectedCartItem != null) {
-                var shouldRefresh = SelectedCartItem.Model.Quantity >= 1;
-                var updatedItem = _cartSvc.ReturnItem(SelectedCartItem.Model);
+                var shouldRefresh = SelectedCartItem/*.Model*/.Quantity >= 1;
+                var updatedItem = _cartSvc.ReturnItem(SelectedCartItem/*.Model*/);
                 if (updatedItem != null && shouldRefresh)
                 {
                     RefreshUX();
@@ -68,11 +68,18 @@ namespace Maui.cop4870.ViewModels
         {
 
         }
-
+        public ObservableCollection<Item?> CartItems
+        {
+            get
+            {
+                var filteredList = _cartSvc.CartItems.Where(p => p?.Product?.Name?.ToLower().Contains(CartQuery?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
+            }
+        }
         public async Task<bool> Search()
         {
             var result = await _cartSvc.Search(CartQuery);
-            NotifyPropertyChanged(nameof(ShoppingCart));
+            NotifyPropertyChanged(nameof(CartItems));
             return true;
         }
     }

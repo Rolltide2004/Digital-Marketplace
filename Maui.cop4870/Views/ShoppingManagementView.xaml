@@ -64,13 +64,13 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <ListView Grid.Row="0"
-                    ItemsSource="{Binding ShoppingCart}"
+                    ItemsSource="{Binding Path=CartItems}"
                     SelectedItem="{Binding SelectedCartItem}"
                 >
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Label Text="{Binding Model.Display}"/>
+                                <Label Text="{Binding Display}"/>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
