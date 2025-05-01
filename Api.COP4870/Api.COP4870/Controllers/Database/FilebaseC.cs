@@ -102,8 +102,6 @@ namespace Api.COP4870.Controllers.EC.Database
                 File.Delete(path);
                 return true;
             }
-
-            //TODO: refer to AddOrUpdate for an idea of how you can implement this.
             return false;
         }
     }
