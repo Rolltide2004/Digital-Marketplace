@@ -11,6 +11,7 @@ namespace Api.COP4870.Controllers.EC.Database
             new Item{ Product = new ProductDTO{Id=2, Name="Product 2 WEB", Quantity=10, Price=1.99 }, Id=2, Quantity=2},
             new Item{ Product = new ProductDTO{Id=3, Name="Product 3 WEB", Quantity=10, Price=1.99 }, Id=3, Quantity=3}
         };
+        private static List<Item?> cart = new List<Item?>();
         public static int LastKey_Item {
             get {
                 if (!inventory.Any()) {
@@ -25,8 +26,19 @@ namespace Api.COP4870.Controllers.EC.Database
                 return inventory;
             }
         }
-        public static IEnumerable<Item> Search(string? query) {
-            return Inventory.Where(p => p?.Product?.Name?.ToLower()
+        public static List<Item?> Cart
+        {
+            get
+            {
+                return cart;
+            }
+        }
+        public static IEnumerable<Item> Search(string? query, string type) {
+            if(type == "inventory")
+                return Inventory.Where(p => p?.Product?.Name?.ToLower()
+                .Contains(query?.ToLower() ?? string.Empty) ?? false);
+            else
+                return Cart.Where(p => p?.Product?.Name?.ToLower()
                 .Contains(query?.ToLower() ?? string.Empty) ?? false);
         }
     }

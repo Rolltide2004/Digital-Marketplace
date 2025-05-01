@@ -29,6 +29,11 @@ public partial class ShoppingManagementView : ContentPage
 
     private void CheckoutClicked(object sender, EventArgs e)
     {
-        
+        (BindingContext as ShoppingManagementViewModel).Checkout();
+    }
+
+    private void SearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as ShoppingManagementViewModel)?.Search();
     }
 }

@@ -27,13 +27,7 @@ namespace Maui.cop4870.ViewModels
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ObservableCollection<Item?> Products
-        {
-            get {
-                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
-                return new ObservableCollection<Item?>(filteredList);
-            }
-        }
+        
         public Item? Delete()
         {
             var item = _svc.Delete(SelectedProduct?.Id ?? 0);
@@ -43,6 +37,13 @@ namespace Maui.cop4870.ViewModels
         public void RefreshProductList()
         {
             NotifyPropertyChanged(nameof(Products));
+        }
+        public ObservableCollection<Item?> Products
+        {
+            get {
+                var filteredList = _svc.Products.Where(p => p?.Product?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
+            }
         }
         public async Task<bool> Search() 
         {

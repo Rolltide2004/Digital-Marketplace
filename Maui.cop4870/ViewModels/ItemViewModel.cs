@@ -13,10 +13,13 @@ namespace Maui.cop4870.ViewModels
     {
         public Item Model { get; set; }
 
+        public Item TempModel { get; set; }
         public ICommand? AddCommand { get; set; }
         private void DoAdd()
         {
-            ShoppingCartService.Current.AddOrUpdate(Model);
+            TempModel = new Item(Model);
+            TempModel.Quantity = 1;
+            ShoppingCartService.Current.AddOrUpdate(TempModel);
         }
         void SetupCommands() {
             AddCommand = new Command(DoAdd);

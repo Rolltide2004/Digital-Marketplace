@@ -20,7 +20,7 @@ namespace Api.COP4870.Controllers.EC.Database
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
                     _instance = new Filebase();
                 }
@@ -50,17 +50,17 @@ namespace Api.COP4870.Controllers.EC.Database
         public Item AddOrUpdate(Item item)
         {
             //set up a new Id if one doesn't already exist
-            if(item.Id <= 0)
+            if (item.Id <= 0)
             {
                 item.Id = LastKey + 1;
             }
 
             //go to the right place
             string path = $"{_productRoot}\\{item.Id}.json";
-            
+
 
             //if the item has been previously persisted
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 //blow it up
                 File.Delete(path);
@@ -72,19 +72,19 @@ namespace Api.COP4870.Controllers.EC.Database
             //return the item, which now has an id
             return item;
         }
-        
+
         public List<Item?> Inventory
         {
             get
             {
                 var root = new DirectoryInfo(_productRoot);
                 var _patients = new List<Item>();
-                foreach(var patientFile in root.GetFiles())
+                foreach (var patientFile in root.GetFiles())
                 {
                     var patient = JsonConvert
                         .DeserializeObject<Item>
                         (File.ReadAllText(patientFile.FullName));
-                    if(patient != null)
+                    if (patient != null)
                     {
                         _patients.Add(patient);
                     }
@@ -108,7 +108,4 @@ namespace Api.COP4870.Controllers.EC.Database
             return false;
         }
     }
-
-
-   
 }
