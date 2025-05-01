@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,8 +44,11 @@ namespace COP4870.Services
             if (existingInvItem != null)
             {
                 existingInvItem.Quantity--;
-                var rep = new WebRequestHandler().Post("/Inventory", existingInvItem).Result;
-                var oldItem = JsonConvert.DeserializeObject<Item>(rep);
+                if (existingInvItem.Quantity > 0)
+                {
+                    var rep = new WebRequestHandler().Post("/Inventory", existingInvItem).Result;
+                    var oldItem = JsonConvert.DeserializeObject<Item>(rep);
+                }
             }
             var existingItem = CartItems.FirstOrDefault(i => i.Id == item.Id);
             if (existingItem == null)
@@ -91,8 +95,17 @@ namespace COP4870.Services
                 return new List<Item>();
             }
             var response = await new WebRequestHandler().Post("/Cart/Search", new QueryRequest { Query = query });
-            items = JsonConvert.DeserializeObject<List<Item?>>(response) ?? new List<Item?>();
+            
             return items;
+        }
+        public void Delete()
+        {
+            var id = items.Where(i => i?.Quantity > 0).Select(p => p?.Id).ToList();
+            foreach (var i in  id)
+            {
+                var result = new WebRequestHandler().Delete($"/Cart/{i}").Result;
+            }
+            items = new List<Item>();
         }
     }
 }

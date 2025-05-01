@@ -13,6 +13,18 @@ namespace Maui.cop4870.ViewModels
         public ItemViewModel? SelectedItem { get; set; }
         public Item? SelectedCartItem { get; set; }
         public string? CartQuery { get; set; }
+        public double? Total {
+            get {
+                double? amount=0.0;
+                var ppu = _cartSvc.CartItems.Where(i => i?.Quantity > 0).Select(p => p?.Price).ToList();
+                var qpu = _cartSvc.CartItems.Where(i => i?.Quantity > 0).Select(p => p?.Quantity).ToList();
+                for (int i = 0; i < ppu.Count(); i++) {
+                    amount += ppu[i] * qpu[i];
+                }
+                amount = Math.Round((double)amount, 2);
+                return amount;
+            }
+        }
         public ObservableCollection<ItemViewModel?> Inventory
         {
             get {
@@ -41,6 +53,7 @@ namespace Maui.cop4870.ViewModels
         public void RefreshUX() {
             NotifyPropertyChanged(nameof(Inventory));
             NotifyPropertyChanged(nameof(CartItems));
+            NotifyPropertyChanged(nameof(Total));
         }
 
         public void PurchaseItem() {
@@ -56,8 +69,8 @@ namespace Maui.cop4870.ViewModels
         }
         public void ReturnItem() {
             if (SelectedCartItem != null) {
-                var shouldRefresh = SelectedCartItem/*.Model*/.Quantity >= 1;
-                var updatedItem = _cartSvc.ReturnItem(SelectedCartItem/*.Model*/);
+                var shouldRefresh = SelectedCartItem.Quantity >= 1;
+                var updatedItem = _cartSvc.ReturnItem(SelectedCartItem);
                 if (updatedItem != null && shouldRefresh)
                 {
                     RefreshUX();
@@ -66,7 +79,8 @@ namespace Maui.cop4870.ViewModels
         }
         public void Checkout()
         {
-
+            _cartSvc.Delete();
+            RefreshUX();
         }
         public ObservableCollection<Item?> CartItems
         {
