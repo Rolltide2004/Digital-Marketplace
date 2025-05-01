@@ -43,6 +43,8 @@ namespace COP4870.Services
             if (existingInvItem != null)
             {
                 existingInvItem.Quantity--;
+                var rep = new WebRequestHandler().Post("/Inventory", existingInvItem).Result;
+                var oldItem = JsonConvert.DeserializeObject<Item>(rep);
             }
             var existingItem = CartItems.FirstOrDefault(i => i.Id == item.Id);
             if (existingItem == null)
@@ -64,7 +66,6 @@ namespace COP4870.Services
                 return null;
             }
             var itemToReturn = CartItems.FirstOrDefault(c => c.Id == item.Id);
-            
             if (itemToReturn != null)
             {
                 var inventoryItem = _prodSvc.Products.FirstOrDefault(p => p.Id == itemToReturn.Id);
@@ -75,15 +76,14 @@ namespace COP4870.Services
                 else
                 {
                     inventoryItem.Quantity += itemToReturn.Quantity;
+                    var rep = new WebRequestHandler().Post("/Inventory", inventoryItem).Result;
+                    var oldItem = JsonConvert.DeserializeObject<Item>(rep);
                 }
                 itemToReturn.Quantity = 0;
             }
-
             var result = new WebRequestHandler().Delete($"/Cart/{item.Id}").Result;
             return JsonConvert.DeserializeObject<Item>(result);
-            //return itemToReturn;
         }
-
         public async Task<IEnumerable<Item?>> Search(string? query)
         {
             if (query != null)
